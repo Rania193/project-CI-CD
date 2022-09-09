@@ -100,7 +100,6 @@ jobs:
       - store_test_results:
           path: test-results
   
-  
   scan-frontend:
     docker:
       - image: cimg/node:13.8.0
