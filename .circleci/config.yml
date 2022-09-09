@@ -97,6 +97,8 @@ jobs:
              cd backend
              npm install
              npm test
+      - store_test_results:
+        path: test-results
   
   
   scan-frontend:
@@ -107,7 +109,7 @@ jobs:
       - restore_cache:
           keys: [frontend-deps]
       - run:
-          name: Front-end unit test
+          name: Front-end scan
           command: |
              cd frontend
              npm install
@@ -121,11 +123,12 @@ jobs:
       - restore_cache:
           keys: [backend-deps]
       - run:
-          name: Back-end unit test
+          name: Back-end scan
           command: |
              cd backend
              npm install
              npm audit --audit-level=critical
+     
 
 #   deploy-infrastructure:
 #     docker:
