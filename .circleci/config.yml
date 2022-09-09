@@ -97,8 +97,9 @@ jobs:
              cd backend
              npm install
              npm test
+             mkdir -p ~/test-results
       - store_test_results:
-          path: test-results
+          path: ~/test-results
   
   scan-frontend:
     docker:
