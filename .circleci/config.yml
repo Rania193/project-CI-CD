@@ -173,7 +173,7 @@ jobs:
 #       # attach workspace
 #       - run:
 #           name: Install dependencies
-#           command: |
+#           comman d: |
 #             # Your code here
 #             exit 1
 #       - run:
