@@ -1,6 +1,6 @@
 version: 2.1
-orbs:
-  grafana: grafana/k6@1.1.3
+# orbs:
+#   grafana: grafana/k6@1.1.3
   
 # commands:
 #   destroy-environment:
@@ -99,21 +99,33 @@ jobs:
              npm test
   
   
-  # scan-frontend:
-  #   docker:
-  #     # Docker image here
-  #   steps:
-  #     # Checkout code from git
-  #     # Restore from cache
-  #     # Your job code here
+  scan-frontend:
+    docker:
+      - image: cimg/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-deps]
+      - run:
+          name: Front-end unit test
+          command: |
+             cd frontend
+             npm install
+             npm audit --audit-level=critical
 
-  # scan-backend:
-  #   docker:
-  #     # Docker image here
-  #   steps:
-  #     # Checkout code from git
-  #     # Restore from cache
-  #     # Your job code here
+  scan-backend:
+    docker:
+      - image: cimg/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-deps]
+      - run:
+          name: Back-end unit test
+          command: |
+             cd backend
+             npm install
+             npm audit --audit-level=critical
 
 #   deploy-infrastructure:
 #     docker:
@@ -290,10 +302,10 @@ workflows:
           requires: [build-frontend]
       - test-backend:
           requires: [build-backend]
-        load-test:
-          jobs:
-            - grafana/k6:
-                script: loadtests/performance-test.js
+        # load-test:
+        #   jobs:
+        #     - grafana/k6:
+        #         script: loadtests/performance-test.js
       # - scan-backend:
       #     requires: [build-backend]
       # - scan-frontend:
