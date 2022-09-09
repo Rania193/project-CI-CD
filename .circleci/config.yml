@@ -196,7 +196,7 @@ jobs:
       - install_ansible
       - add_ssh_keys:
           fingerprints: ["f3:6f:3a:f9:6e:1f:ee:fc:23:ed:46:45:5a:af:9c:98"]
-      - attach workspace:
+      - attach_workspace:
           at: ~/
       - run:
           name: Configure server
@@ -339,11 +339,11 @@ workflows:
           requires: [build-frontend]
       - deploy-infrastructure:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-      #     filters:
-      #       branches:
-      #         only: [test-feature-branch]
+          filters:
+            branches:
+              only: [master]
       - configure-infrastructure:
-          requires: [deploy-infra structure]
+          requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
       # - deploy-frontend:
