@@ -99,10 +99,10 @@ jobs:
              npm test
   
   load_test:
-    steps:
+    jobs:
       - grafana/k6:
           scripts: loadtests/performance-test.js       
-             
+
   scan-frontend:
     docker:
       # Docker image here
