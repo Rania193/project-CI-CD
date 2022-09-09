@@ -98,7 +98,7 @@ jobs:
              npm install
              npm test
       - store_test_results:
-        path: test-results
+          path: test-results
   
   
   scan-frontend:
