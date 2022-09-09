@@ -99,7 +99,7 @@ jobs:
              npm test
   
   load_test:
-    jobs:
+    steps:
       - grafana/k6:
           scripts: loadtests/performance-test.js       
 
