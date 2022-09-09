@@ -98,11 +98,7 @@ jobs:
              npm install
              npm test
   
-  load_test:
-    steps:
-      - grafana/k6:
-          scripts: loadtests/performance-test.js       
-
+  
   # scan-frontend:
   #   docker:
   #     # Docker image here
@@ -294,8 +290,10 @@ workflows:
           requires: [build-frontend]
       - test-backend:
           requires: [build-backend]
-      - load_test:
-          requires: [test-frontend, test-backend]
+      - load-test:
+          jobs:
+            - grafana/k6:
+                script: loadtests/performance-test.js
       # - scan-backend:
       #     requires: [build-backend]
       # - scan-frontend:
