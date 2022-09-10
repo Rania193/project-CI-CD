@@ -59,7 +59,8 @@ jobs:
             npm run build
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: docker build .
+      - run: 
+          docker build .
           command: |
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker push .
