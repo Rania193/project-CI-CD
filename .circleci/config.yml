@@ -1,10 +1,7 @@
 version: 2.1
-# orbs:
-#   grafana: grafana/k6@1.1.3
-executors:
-  docker-publisher:
-    environment:
-      IMAGE_NAME: rania/building-on-ci  
+orbs:
+# grafana: grafana/k6@1.1.3 
+  browser-tools: circleci/browser-tools@1.2.3
 commands:
   install_awscli:
     description: Install AWS CLI V2
@@ -47,6 +44,9 @@ jobs:
   build-frontend:
     docker:
       - image: cimg/node:13.8.0
+        auth:
+            username: $DOCKERHUB_USERNAME
+            password: $DOCKERHUB_PASS
     steps:
       - checkout
       - restore_cache:
@@ -57,10 +57,18 @@ jobs:
             cd frontend
             npm install
             npm run build
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: docker build .
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push .
+
       # - run:  
       #     name: Build Docker image
       #     command: |
       #       docker build -t $IMAGE_NAME:latest
+      
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-deps
