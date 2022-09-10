@@ -4,7 +4,7 @@
   shell: |
     curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 
-- name: "Install Node.js"
+- name: "Install Node.js with apt"
   become: true 
   apt:
     name: ["nodejs"]
