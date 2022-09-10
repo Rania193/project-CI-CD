@@ -44,9 +44,6 @@ jobs:
   build-frontend:
     docker:
       - image: cimg/node:13.8.0
-        auth:
-            username: $DOCKERHUB_USERNAME
-            password: $DOCKERHUB_PASS
     steps:
       - checkout
       - restore_cache:
