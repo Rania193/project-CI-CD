@@ -75,6 +75,31 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-deps
+      - run:
+          name: Archive Docker image
+          command: docker save -o image.tar $IMAGE_NAME
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./image.tar
+  publish-latest:
+    environment:
+      IMAGE_NAME: building-on-ci
+    docker:
+      - image: cimg/node:13.8.0
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker
+      - run:
+          name: Load archived Docker image
+          command: docker load -i /tmp/workspace/image.tar
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push $IMAGE_NAME:latest
+      
 
   build-backend:
     docker:
@@ -121,9 +146,9 @@ jobs:
              cd backend
              npm install
              npm test
-             mkdir -p ~/test-results/junit/rspec/rspec.xml
-      - store_test_results:
-          path: ~/test-results/junit
+            # mkdir -p ~/test-results/junit/rspec/rspec.xml
+     # - store_test_results:
+      #    path: ~/test-results/junit
   
   scan-frontend:
     docker:
@@ -328,6 +353,9 @@ workflows:
     jobs:
       - build-frontend
       - build-backend
+      - publish-latest:
+          requires:
+            - build-frontend
       - test-frontend:
           requires: [build-frontend]
       - test-backend:
