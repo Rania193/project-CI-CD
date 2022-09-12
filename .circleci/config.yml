@@ -19,7 +19,7 @@ commands:
       - run:
           name: Install Node.js 13
           command: |
-            curl -sLf -o /dev/null 'https://deb.nodesource.com/node_6.x/dists/focal/Release'
+            curl -sLf 'https://deb.nodesource.com/node_6.x/dists/focal/Release'
             sudo apt install -y nodejs
             
   install_awscli:
