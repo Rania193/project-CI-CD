@@ -12,7 +12,16 @@ commands:
           command: |
             curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
             sudo apt install -y nodejs
-
+  install_nodejs_focal:
+    #to install nodejs for cimg/base:stable, as it doesn't contain nodejs.
+    description: Install Node.js 13
+    steps:
+      - run:
+          name: Install Node.js 13
+          command: |
+            curl -sLf -o /dev/null 'https://deb.nodesource.com/node_6.x/dists/focal/Release
+            sudo apt install -y nodejs
+            
   install_awscli:
     description: Install AWS CLI V2
     steps:
@@ -63,7 +72,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name udapeople-backened-<< parameters.Workflow_ID >>
+            aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.Workflow_ID >>
             aws s3 rm s3://udapeople-<<parameters.Workflow_ID>> --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.Workflow_ID >>
 
@@ -257,7 +266,7 @@ jobs:
     steps:
       - checkout
       - install_awscli
-      - install_nodejs
+      - install_nodejs_focal
       - restore_cache:
           keys: [frontend-deps]
       - run:
