@@ -10,6 +10,8 @@ import { TransformInterceptor } from './modules/common/interceptors/TransformInt
 import * as express from 'express';
 import { ErrorFilter } from './modules/errors/error.filter';
 
+console.log('Hey there, this is the development branch. Only CI takes place here.')
+
 async function bootstrap() {
   const logger = new AppLogger();
   logger.info(`NodeJs Version ${process.version}`);
